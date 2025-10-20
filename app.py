@@ -147,7 +147,7 @@ def add_consultant(role, annual_salary, fixed_cost):
                     annual_salary = EXCLUDED.annual_salary,
                     fixed_cost = EXCLUDED.fixed_cost
             '''), {
-                'role': role,
+                'role': row,
                 'annual_salary': annual_salary,
                 'fixed_cost': fixed_cost
             })
@@ -296,13 +296,13 @@ else:
                         excel_file = export_to_excel(df_single, f"{row['name']}.xlsx")
                         if excel_file:
                             with open(excel_file, "rb") as f:
-                                st.download_button("Export to Excel", f, file_name=f"{row['name']}.xlsx")
+                                st.download_button("Export to Excel", f, file_name=f"{row['name']}.xlsx", key=f"export_excel_{row['id']}")
                             os.remove(excel_file)  # Clean up file
                     with col3:
                         pdf_file = export_to_pdf(df_single, f"{row['name']}.pdf")
                         if pdf_file:
                             with open(pdf_file, "rb") as f:
-                                st.download_button("Export to PDF", f, file_name=f"{row['name']}.pdf")
+                                st.download_button("Export to PDF", f, file_name=f"{row['name']}.pdf", key=f"export_pdf_{row['id']}")
                             os.remove(pdf_file)  # Clean up file
             
             # Export all
@@ -315,13 +315,13 @@ else:
                 all_excel = export_to_excel(all_df, "all_projects.xlsx")
                 if all_excel:
                     with open(all_excel, "rb") as f:
-                        st.download_button("Export All to Excel", f, file_name="all_projects.xlsx")
+                        st.download_button("Export All to Excel", f, file_name="all_projects.xlsx", key="export_all_excel")
                     os.remove(all_excel)  # Clean up
             with col2:
                 all_pdf = export_to_pdf(all_df, "all_projects.pdf")
                 if all_pdf:
                     with open(all_pdf, "rb") as f:
-                        st.download_button("Export All to PDF", f, file_name="all_projects.pdf")
+                        st.download_button("Export All to PDF", f, file_name="all_projects.pdf", key="export_all_pdf")
                     os.remove(all_pdf)  # Clean up
         else:
             st.info("No saved projects yet.")
